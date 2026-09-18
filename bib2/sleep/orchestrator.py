@@ -6,7 +6,9 @@ import numpy as np
 
 class SleepStage(Enum):
     WAKE = "Wake"
+    AWAKE = "Wake"
     NREM_N1_N2 = "NREM_Light_Spindles"
+    NREM_LIGHT = "NREM_Light_Spindles"
     NREM_SWS = "NREM_SlowWaveSleep"
     REM = "RapidEyeMovement"
 
