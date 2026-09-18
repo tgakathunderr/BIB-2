@@ -33,6 +33,12 @@ class CorticalAreaRegistry:
             area_name: CanonicalMicrocircuit(dim=dim) for area_name in BRODMANN_AREAS
         }
 
+    def get_area(self, area_name: str) -> CanonicalMicrocircuit:
+        """Retrieve canonical microcircuit for a specific Brodmann area."""
+        if area_name not in self.areas:
+            raise KeyError(f"Unknown Brodmann area: {area_name}")
+        return self.areas[area_name]
+
     def forward_area(self, area_name: str, thalamic_input: np.ndarray) -> np.ndarray:
         """Execute laminar pass through an area; returns Layer V subcortical output."""
         if area_name not in self.areas:

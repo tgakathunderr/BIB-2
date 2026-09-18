@@ -41,6 +41,11 @@ class CanonicalMicrocircuit:
         self.l5 = np.zeros(dim, dtype=np.float32)
         self.l6 = np.zeros(dim, dtype=np.float32)
 
+    @property
+    def l5_output(self) -> np.ndarray:
+        """Convenience property accessing Layer V subcortical/motor efferent state."""
+        return self.l5
+
     def forward(self, thalamic_input: np.ndarray, top_down_l1_feedback: float = 0.0) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """
         Execute forward pass through canonical laminar microcircuit.
