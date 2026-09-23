@@ -25,6 +25,25 @@
 
 ---
 
+## Table of Contents
+
+- [The Paradigm Shift: Organismic AI vs. Transformers](#the-paradigm-shift-organismic-ai-vs-transformers)
+- [Featured Benchmark: 100% Biological Pong](#featured-benchmark-100-biological-pong)
+- [System Architecture](#system-architecture)
+- [The 14 Macro-Subsystems](#the-14-macro-subsystems)
+- [Pluggable Domain Adapters](#pluggable-domain-adapters)
+  - [Robotics Adapter](#robotics-adapter)
+  - [Language Adapter](#language-adapter)
+  - [Autonomous Agent RL Adapter](#autonomous-agent-rl-adapter)
+- [Performance & Benchmarks](#performance--benchmarks)
+- [Quickstart & Installation](#quickstart--installation)
+- [Verification & Running Tests](#verification--running-tests)
+- [Directory Structure](#directory-structure)
+- [Primary Scientific Literature](#primary-scientific-literature)
+- [License](#license)
+
+---
+
 ## The Paradigm Shift: Organismic AI vs. Transformers
 
 Today's AI industry is built around a single paradigm: static neural networks trained on massive offline text datasets. While Transformers have mastered language fluency, they do not possess agency, cannot learn in continuous real-time, and suffer from catastrophic forgetting. 
@@ -103,25 +122,6 @@ python examples/pong_bib2.py
 - `[SPACE]`: Toggle Fast-Train Mode ($100\times$ speed vs $60\text{ FPS}$ real-time)
 - `[S]`: Trigger manual Slow-Wave Sleep (SWS) memory consolidation & Tononi SHY downscaling
 - `[ESC]` or `[Q]`: Exit
-
----
-
-## Table of Contents
-
-- [The Paradigm Shift: Organismic AI vs. Transformers](#the-paradigm-shift-organismic-ai-vs-transformers)
-- [Featured Benchmark: 100% Biological Pong](#featured-benchmark-100-biological-pong)
-- [System Architecture](#system-architecture)
-- [The 14 Macro-Subsystems](#the-14-macro-subsystems)
-- [Pluggable Domain Adapters](#pluggable-domain-adapters)
-  - [Robotics Adapter](#robotics-adapter)
-  - [Language Adapter](#language-adapter)
-  - [Autonomous Agent RL Adapter](#autonomous-agent-rl-adapter)
-- [Performance & Benchmarks](#performance--benchmarks)
-- [Quickstart & Installation](#quickstart--installation)
-- [Verification & Running Tests](#verification--running-tests)
-- [Directory Structure](#directory-structure)
-- [Primary Scientific Literature](#primary-scientific-literature)
-- [License](#license)
 
 ---
 
