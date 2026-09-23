@@ -17,9 +17,10 @@
 ---
 
 <div align="center">
-  <h3>🎬 Watch the Official BIB 2 Launch Film</h3>
-  <video src="https://github.com/user-attachments/assets/c7cbe6de-fc7e-4384-bba1-55515a225778" controls="controls" width="100%" style="max-width: 100%; border-radius: 8px;">
-  </video>
+  <h3>🎬 Official BIB 2 Launch Film</h3>
+  <img src="assets/bib2_launch.gif" alt="BIB 2 Official Launch Film" width="100%" style="border-radius: 8px;" />
+  <p><em>Continuous biological computation, three live embodiments (Pong, Neuro-Trader, Neuro-Chess), zero backpropagation.</em></p>
+  <p>📥 <a href="assets/bib2_launch.mp4"><strong>Download Full HD 1080p MP4 Video with Audio (6 MB)</strong></a></p>
 </div>
 
 ---
