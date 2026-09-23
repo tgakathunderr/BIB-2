@@ -184,7 +184,7 @@ To prove that this architecture can learn continuous motor dynamics without deep
 ```
 
 ### The Learning Mechanism
-Action selection is mediated by the Basal Ganglia. The Neocortical representation vector $s(t) \in \mathbb{R}^{64}$ projects through a plastic corticostriatal weight matrix $W_{\text{CS}} \in \mathbb{R}^{3 \times 64}$ to propose three striatal action candidates: `UP`, `DOWN`, or `STAY`.
+Action selection is mediated by the Basal Ganglia. The retinotopic optic nerve sensory vector $s(t) \in \mathbb{R}^{64}$ (`CN_II`) projects through a plastic striatal weight matrix $W_{\text{CS}} \in \mathbb{R}^{3 \times 64}$ to propose three striatal action candidates: `UP`, `DOWN`, or `STAY`.
 
 The Basal Ganglia gates the winning action using competitive $D_1$ (pro-kinetic) vs $D_2$ (anti-kinetic) pathway competition.
 
@@ -198,25 +198,45 @@ Weights are updated instantaneously via three-factor plasticity:
 $$W_{\text{CS}}[a_{\text{selected}}] \leftarrow W_{\text{CS}}[a_{\text{selected}}] + \eta \cdot \text{RPE} \cdot s(t)$$
 
 ### Empirical Results
-We evaluated the agent across a progressive curriculum (Baby: 300px paddle $\to$ Master: 50px paddle) in both real-time visual mode and headless simulation (15,000 steps).
+We evaluated the agent across progressive curriculum scaling using the reproducible headless benchmark (`python -c "from examples.pong_bib2 import run_headless; run_headless(5000)"`) and the multi-seed benchmark suite (`python examples/pong_bib2.py --benchmark`). 
 
+#### 1. Single-Seed Progression (Seed = 42)
 ```
-+-----------------------------------------------------------------------------------+
-|                        PONG LEARNING & ADAPTATION PROFILE                         |
-+---------------------+-------------------+---------------------+-------------------+
-| Training Step       | Interception Rate | Dominant Action Bias| Synaptic State    |
-+---------------------+-------------------+---------------------+-------------------+
-| T = 0 - 500         | 18.2%             | Random exploration  | Initialized (-0.02, 0.02)|
-| T = 500 - 2,000     | 46.5%             | Visual tracking onset| UP/DOWN specialization|
-| T = 2,000 - 5,000   | 78.4%             | Coordinated pursuit | Strong RF potentiation|
-| T = 5,000 - 15,000  | 91.2%             | Fluid interception  | Stable / Consolidated|
-+---------------------+-------------------+---------------------+-------------------+
++---------------------------------------------------------------------------------------------------+
+|                        PONG EMPIRICAL LEARNING & ADAPTATION PROFILE (SEED=42)                     |
++---------------+---------------+-----------------+-------------------+-----------------------------+
+| Time Step     | Cumulative Hit| Cumulative Miss | Interception Rate | Curriculum Stage (Paddle H) |
++---------------+---------------+-----------------+-------------------+-----------------------------+
+| T = 500       | 2             | 1               | 66.7%             | Baby (300 px)               |
+| T = 1,000     | 4             | 1               | 80.0%             | Baby (300 px)               |
+| T = 2,500     | 9             | 1               | 90.0%             | Baby (300 px)               |
+| T = 5,000     | 18            | 1               | 94.7%             | Toddler (250 px)            |
++---------------+---------------+-----------------+-------------------+-----------------------------+
 ```
+
+#### 2. Multi-Seed Benchmark vs. Random Baseline (5,000 Steps / Seed)
+```
++---------------------------------------------------------------------------------------------------------+
+|                    EMPIRICAL MULTI-SEED CURRICULUM BENCHMARK (5,000 STEPS / SEED)                       |
++------------+------------------------------------+------------------------------------+------------------+
+| Seed       | Random Control (Hits / Misses / %) | BIB 2 Agent (Hits / Misses / %)    | Final Curriculum |
++------------+------------------------------------+------------------------------------+------------------+
+| Seed 1     | 14 Hits /  9 Misses ( 60.9%)       | 20 Hits /  0 Misses (100.0%)       | Toddler (250px)  |
+| Seed 2     | 11 Hits /  7 Misses ( 61.1%)       | 10 Hits /  1 Misses ( 90.9%)       | Toddler (250px)  |
+| Seed 42    |  6 Hits /  0 Misses (100.0%)       | 18 Hits /  1 Misses ( 94.7%)       | Toddler (250px)  |
+| Seed 100   | 10 Hits /  1 Misses ( 90.9%)       | 18 Hits /  1 Misses ( 94.7%)       | Toddler (250px)  |
+| Seed 999   |  4 Hits /  1 Misses ( 80.0%)       | 10 Hits /  0 Misses (100.0%)       | Toddler (250px)  |
++------------+------------------------------------+------------------------------------+------------------+
+| OVERALL    | 45 Hits / 18 Misses ( 71.4%)       | 76 Hits /  3 Misses ( 96.2%)       | -83.3% Errors    |
++------------+------------------------------------+------------------------------------+------------------+
+```
+Across 5 independent seeds, the BIB 2 agent reduced total missed balls from 18 down to 3 (**83.3% reduction in errors**), achieving a **96.2% net interception accuracy** with zero backpropagation and promoting to harder curriculum stages.
+
 
 Key observations from empirical traces:
-1. **Self-Organizing Receptive Fields**: When the ball enters upper receptive fields (`CN_II[0:10]`), the `UP` action row of $W_{\text{CS}}$ potentiates strongly ($w > +1.8$), while the `DOWN` row is actively depressed ($w < -1.2$). No programmer told the network what "UP" means; the network linked upper visual stimulation to upward motor contraction purely to maximize dopamine.
+1. **Self-Organizing Receptive Fields**: When the ball enters upper receptive fields (`CN_II[0:5]`), the `UP` action row of $W_{\text{CS}}$ potentiates strongly ($w \approx +1.30$), while the `DOWN` row is actively depressed ($w \approx -0.83$). Conversely, in lower receptive fields (`CN_II[23:30]`), the `DOWN` action row potentiates ($w \approx +0.91$) and the `UP` row depresses ($w \approx -0.64$). No programmer told the network what "UP" means; the network linked upper visual stimulation to upward motor contraction purely to maximize dopamine.
 2. **Autonomic State Modulation**: When the agent misses, the sympathetic surge increases the motor babble exploration rate, preventing the agent from getting stuck in behavioral deadlocks.
-3. **Sleep Renormalization**: Every time the agent completes an episode and transitions to `tick_sleep()`, Tononi SHY downscales weights by 5%, preventing the microcircuit tanh activations from saturating and enabling infinite continuous learning.
+3. **Sleep Renormalization**: Every time the agent completes an episode and transitions to `tick_sleep()`, Tononi SHY downscales weights by 5%, preventing weight saturation and enabling continuous lifelong learning.
 
 ---
 

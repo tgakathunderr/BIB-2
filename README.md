@@ -16,6 +16,15 @@
 
 ---
 
+<div align="center">
+  <h3>🎬 Watch the Official BIB 2 Launch Film</h3>
+  <video src="https://github.com/tgakathunderr/BIB-2/raw/master/assets/bib2_launch.mp4" controls="controls" width="100%" style="max-width: 100%; border-radius: 8px;">
+    <source src="assets/bib2_launch.mp4" type="video/mp4">
+  </video>
+</div>
+
+---
+
 ## The Paradigm Shift: Organismic AI vs. Transformers
 
 Today's AI industry is built around a single paradigm: static neural networks trained on massive offline text datasets. While Transformers have mastered language fluency, they do not possess agency, cannot learn in continuous real-time, and suffer from catastrophic forgetting. 
@@ -60,13 +69,34 @@ To empirically demonstrate continuous online learning without backpropagation, B
 5. **Slow-Wave Sleep (SWS) Consolidation**: Every round, the agent triggers a sleep cycle: Hippocampal Sharp-Wave Ripples (SWRs) replay motor trajectories while Tononi SHY downscales weights by 5% to prevent cortical saturation and catastrophic forgetting.
 6. **Cybernetic Telemetry HUD**: Features a real-time cardiac ECG oscilloscope, live neurotransmitter gauges (Dopamine, Serotonin, Norepinephrine, Cortisol), Basal Ganglia $D_1/D_2$ gating states, and Brodmann neocortical heatmaps.
 
+### Reproducible Empirical Benchmark Results
+
+```
++---------------------------------------------------------------------------------------------------------+
+|                    EMPIRICAL MULTI-SEED CURRICULUM BENCHMARK (5,000 STEPS / SEED)                       |
++------------+------------------------------------+------------------------------------+------------------+
+| Seed       | Random Control (Hits / Misses / %) | BIB 2 Agent (Hits / Misses / %)    | Final Curriculum |
++------------+------------------------------------+------------------------------------+------------------+
+| Seed 1     | 14 Hits /  9 Misses ( 60.9%)       | 20 Hits /  0 Misses (100.0%)       | Toddler (250px)  |
+| Seed 2     | 11 Hits /  7 Misses ( 61.1%)       | 10 Hits /  1 Misses ( 90.9%)       | Toddler (250px)  |
+| Seed 42    |  6 Hits /  0 Misses (100.0%)       | 18 Hits /  1 Misses ( 94.7%)       | Toddler (250px)  |
+| Seed 100   | 10 Hits /  1 Misses ( 90.9%)       | 18 Hits /  1 Misses ( 94.7%)       | Toddler (250px)  |
+| Seed 999   |  4 Hits /  1 Misses ( 80.0%)       | 10 Hits /  0 Misses (100.0%)       | Toddler (250px)  |
++------------+------------------------------------+------------------------------------+------------------+
+| OVERALL    | 45 Hits / 18 Misses ( 71.4%)       | 76 Hits /  3 Misses ( 96.2%)       | -83.3% Errors    |
++------------+------------------------------------+------------------------------------+------------------+
+```
+
 ### Run the Experiment
 ```bash
+# Multi-Seed Empirical Benchmark (Validates 5 independent random seeds)
+python examples/pong_bib2.py --benchmark
+
+# Headless Benchmark (Runs 5,000 steps deterministically with seed=42)
+python -c "from examples.pong_bib2 import run_headless; run_headless(5000)"
+
 # Interactive Visual UI (Requires pygame)
 python examples/pong_bib2.py
-
-# Headless Benchmark (Runs 5,000 steps in pure Python/NumPy)
-python -c "from examples.pong_bib2 import run_headless; run_headless(5000)"
 ```
 
 **Controls in Interactive Mode**:

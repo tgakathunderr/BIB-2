@@ -471,12 +471,89 @@ class CyberneticHUD:
         screen.blit(self.font_small.render(ctrl_txt, True, (107, 114, 128)), (self.x + 16, self.h - 22))
 
 
+def run_benchmark(steps_per_seed: int = 5000) -> None:
+    """Empirical multi-seed validation comparing random control vs BIB 2 organismic agent."""
+    seeds = [1, 2, 42, 100, 999]
+    print("=" * 88)
+    print("  BIB 2 PONG: MULTI-SEED EMPIRICAL BENCHMARK (ZERO BACKPROPAGATION)")
+    print(f"  Evaluating {len(seeds)} independent random seeds ({steps_per_seed} steps/seed)")
+    print("=" * 88)
+    print(f"{'Seed':<10} | {'Random Control (Hits / Miss / %)':<34} | {'BIB 2 Agent (Hits / Miss / %)':<32} | {'Curriculum'}")
+    print("-" * 88)
+
+    ctrl_total_h, ctrl_total_m = 0, 0
+    bib_total_h, bib_total_m = 0, 0
+
+    for s in seeds:
+        # 1. Random Control
+        random.seed(s)
+        np.random.seed(s)
+        env_c = PongEnv()
+        for _ in range(steps_per_seed):
+            a = random.choice([0, 1, 2])
+            env_c.step(a)
+        tot_c = env_c.hits + env_c.misses
+        pct_c = (env_c.hits / tot_c * 100.0) if tot_c > 0 else 0.0
+        ctrl_total_h += env_c.hits
+        ctrl_total_m += env_c.misses
+
+        # 2. BIB 2 Organismic Agent
+        random.seed(s)
+        np.random.seed(s)
+        env_b = PongEnv()
+        agent_b = BIB2PongAgent(seed=s)
+        p_rew = 0.0
+        for _ in range(steps_per_seed):
+            a = agent_b.step(env_b, prev_reward=p_rew)
+            r, d = env_b.step(a)
+            p_rew = r
+            if d:
+                agent_b.sleep_consolidation()
+        tot_b = env_b.hits + env_b.misses
+        pct_b = (env_b.hits / tot_b * 100.0) if tot_b > 0 else 0.0
+        bib_total_h += env_b.hits
+        bib_total_m += env_b.misses
+        st = env_b.curriculum[env_b.stage_idx]["name"]
+
+        c_str = f"{env_c.hits:2d} Hits / {env_c.misses:2d} Misses ({pct_c:5.1f}%)"
+        b_str = f"{env_b.hits:2d} Hits / {env_b.misses:2d} Misses ({pct_b:5.1f}%)"
+        print(f"Seed {s:<5} | {c_str:<34} | {b_str:<32} | {st}")
+
+    print("-" * 88)
+    tot_c_all = ctrl_total_h + ctrl_total_m
+    tot_b_all = bib_total_h + bib_total_m
+    pct_c_all = (ctrl_total_h / tot_c_all * 100.0) if tot_c_all > 0 else 0.0
+    pct_b_all = (bib_total_h / tot_b_all * 100.0) if tot_b_all > 0 else 0.0
+    err_reduc = ((ctrl_total_m - bib_total_m) / ctrl_total_m * 100.0) if ctrl_total_m > 0 else 0.0
+
+    ov_c = f"{ctrl_total_h:2d} Hits / {ctrl_total_m:2d} Misses ({pct_c_all:5.1f}%)"
+    ov_b = f"{bib_total_h:2d} Hits / {bib_total_m:2d} Misses ({pct_b_all:5.1f}%)"
+    print(f"{'OVERALL':<10} | {ov_c:<34} | {ov_b:<32} | -{err_reduc:.1f}% Errors")
+    print("=" * 88 + "\n")
+
+
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="BIB 2 Biological Pong Experiment")
+    parser.add_argument("--benchmark", action="store_true", help="Run multi-seed empirical benchmark")
+    parser.add_argument("--headless", type=int, default=0, metavar="STEPS", help="Run headless simulation for N steps")
+    parser.add_argument("--fast-train", action="store_true", help="Start visual simulation in 100x fast-train mode")
+    parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility")
+    args, _ = parser.parse_known_args()
+
+    if args.benchmark:
+        run_benchmark()
+        return
+
+    if args.headless > 0:
+        run_headless(steps=args.headless, seed=args.seed)
+        return
+
     if not PYGAME_AVAILABLE:
         print("Pygame is required to run the visual Pong environment.")
         print("Please run: pip install pygame")
         print("Running 1,000-step headless simulation benchmark instead...")
-        run_headless(steps=1000)
+        run_headless(steps=1000, seed=args.seed)
         return
 
     pygame.init()
@@ -491,11 +568,11 @@ def main():
     clock = pygame.time.Clock()
 
     env = PongEnv(width=court_w, height=court_h)
-    agent = BIB2PongAgent()
+    agent = BIB2PongAgent(seed=args.seed)
     hud = CyberneticHUD(x_offset=court_w, width=hud_w, height=total_h)
 
     running = True
-    fast_forward = False
+    fast_forward = args.fast_train
     pending_reward = 0.0
 
     print("=" * 80)
@@ -571,11 +648,13 @@ def main():
     sys.exit()
 
 
-def run_headless(steps: int = 5000):
+def run_headless(steps: int = 5000, seed: int = 42):
     """Headless simulation benchmark for CI/CD environments or test validation."""
-    print(f"Running headless BIB 2 Pong simulation for {steps} steps...")
+    print(f"Running headless BIB 2 Pong simulation for {steps} steps (seed={seed})...")
+    random.seed(seed)
+    np.random.seed(seed)
     env = PongEnv()
-    agent = BIB2PongAgent()
+    agent = BIB2PongAgent(seed=seed)
     pending_reward = 0.0
 
     for step_i in range(steps):
@@ -585,7 +664,9 @@ def run_headless(steps: int = 5000):
         if done:
             agent.sleep_consolidation()
 
-    print(f"Headless simulation completed: {steps} steps | Hits: {env.hits} | Misses: {env.misses} | Stage: {env.curriculum[env.stage_idx]['name']}")
+    total_attempts = env.hits + env.misses
+    hit_rate = (env.hits / total_attempts * 100.0) if total_attempts > 0 else 0.0
+    print(f"Headless simulation completed: {steps} steps | Hits: {env.hits} | Misses: {env.misses} | Interception Rate: {hit_rate:.1f}% | Stage: {env.curriculum[env.stage_idx]['name']}")
     return env.hits, env.misses
 
 
