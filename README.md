@@ -18,8 +18,7 @@
 
 <div align="center">
   <h3>🎬 Watch the Official BIB 2 Launch Film</h3>
-  <video src="https://github.com/tgakathunderr/BIB-2/raw/master/assets/bib2_launch.mp4" controls="controls" width="100%" style="max-width: 100%; border-radius: 8px;">
-    <source src="assets/bib2_launch.mp4" type="video/mp4">
+  <video src="https://github.com/user-attachments/assets/c7cbe6de-fc7e-4384-bba1-55515a225778" controls="controls" width="100%" style="max-width: 100%; border-radius: 8px;">
   </video>
 </div>
 
