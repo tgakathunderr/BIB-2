@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bib2"
+version = "2.0.0"
+description = "Organismic Artificial Intelligence in Silicon: Complete 1:1 Macro-Anatomical Human Nervous System Replica"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "UnikAI Lab", email = "unikailab@proton.me" }
+]
+keywords = [
+    "artificial-intelligence",
+    "neuroscience",
+    "neuromorphic",
+    "biological-ai",
+    "organismic-ai",
+    "hebbian-plasticity",
+    "basal-ganglia",
+    "neocortex",
+    "homeostasis",
+    "zero-backpropagation"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Bio-Informatics"
+]
+dependencies = [
+    "numpy>=1.24.0"
+]
+
+[project.optional-dependencies]
+interactive = [
+    "pygame>=2.5.0"
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0"
+]
+all = [
+    "pygame>=2.5.0",
+    "pytest>=7.0.0"
+]
+
+[project.urls]
+Homepage = "https://www.unikai.in"
+Repository = "https://github.com/tgakathunderr/BIB-2"
+Documentation = "https://github.com/tgakathunderr/BIB-2#readme"
+Paper = "https://github.com/tgakathunderr/BIB-2/blob/master/ORGANISMIC_AI_PAPER.md"
+
+[project.scripts]
+bib2-benchmark = "bib2.benchmark:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bib2*"]

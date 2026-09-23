@@ -337,3 +337,18 @@ The future of artificial intelligence is not monolithic. While cloud-based trans
 6. **Sterling, P. (2012)**. Allostasis: a model of predictive regulation. *Physiology & Behavior*, 106(1), 5-15.
 7. **Mink, J. W. (1996)**. The basal ganglia: focused selection and inhibition of competing motor programs. *Progress in Neurobiology*, 50(4), 381-425.
 8. **Wolpert, D. M., Miall, R. C., & Kawato, M. (1998)**. Internal models in the cerebellum. *Trends in Cognitive Sciences*, 2(9), 338-347.
+
+---
+
+## Citation
+
+```bibtex
+@article{uniki2026bib2,
+  title={Organismic Artificial Intelligence: Continuous Biological Computation, Homeostatic Drive, and Real-Time Plasticity in Silicon},
+  author={UnikAI Lab},
+  journal={Open Research Specification & Empirical Benchmark},
+  year={2026},
+  url={https://github.com/tgakathunderr/BIB-2}
+}
+```
+

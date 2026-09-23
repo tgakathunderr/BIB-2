@@ -40,6 +40,7 @@
 - [Verification & Running Tests](#verification--running-tests)
 - [Directory Structure](#directory-structure)
 - [Primary Scientific Literature](#primary-scientific-literature)
+- [Citation](#citation)
 - [License](#license)
 
 ---
@@ -299,10 +300,41 @@ BIB 2 was profiled across 1,000 continuous clock cycles on standard desktop CPU 
 - **Dependencies**: `numpy`, `pygame` (for Pong GUI), `pytest`
 
 ### Installation
+
+#### Option 1: Direct Pip Installation (Zero Cloning Required)
+```bash
+# Core package (Pure NumPy, zero GPU/cloud dependencies)
+pip install git+https://github.com/tgakathunderr/BIB-2.git
+
+# With interactive visual simulator support (Pygame)
+pip install "git+https://github.com/tgakathunderr/BIB-2.git#egg=bib2[interactive]"
+
+# With full development & test suite dependencies
+pip install "git+https://github.com/tgakathunderr/BIB-2.git#egg=bib2[all]"
+```
+
+#### Option 2: Clone for Local Development
 ```bash
 git clone https://github.com/tgakathunderr/BIB-2.git
 cd BIB-2
-pip install numpy pygame pytest
+pip install -e .
+```
+
+### Quick Python Usage
+
+```python
+import bib2
+
+# Initialize 1:1 human nervous system organism
+brain = bib2.BIB2NervousSystem()
+
+# Advance 1 deterministic biological clock cycle (19 stages)
+state = brain.tick()
+
+# Inspect autonomic & neurochemical telemetry
+print(f"Heart Rate: {state.autonomic.heart_rate:.1f} BPM")
+print(f"Dopamine:   {state.chemical.dopamine:.3f}")
+print(f"Cortisol:   {state.chemical.cortisol:.3f}")
 ```
 
 ### Running the Tests & Benchmark
@@ -310,7 +342,9 @@ pip install numpy pygame pytest
 # Run the complete test suite (60 tests)
 pytest tests/ -v
 
-# Run the live performance benchmark
+# Run the live performance benchmark (or CLI entry point)
+bib2-benchmark
+# or
 python -m bib2.benchmark
 ```
 
@@ -320,9 +354,13 @@ python -m bib2.benchmark
 
 ```
 BIB-2/
+├── pyproject.toml              # Modern PEP 517/621 Package Build Configuration
+├── setup.py                    # Legacy Packaging Compatibility Layer
+├── CITATION.cff                # Citation File Format 1.2.0 Specification
 ├── LICENSE                     # Apache 2.0 Open Source License
 ├── README.md                   # System Documentation & Architecture Overview
 ├── ORGANISMIC_AI_PAPER.md      # Full Scientific Research Paper
+├── assets/                     # Media & Video Launch Assets
 ├── bib2/                       # Core Human Nervous System Architecture
 │   ├── types.py                # Core Neural Bus Dataclasses & Signal Structures
 │   ├── brain.py                # Master BIB2NervousSystem 19-Stage Clock Orchestrator
@@ -359,6 +397,26 @@ BIB 2 was designed directly from peer-reviewed neurobiological research. See [do
 - **Cerebellar Forward Models**: Wolpert, D. M., Miall, R. C., & Kawato, M. (1998). *Internal models in the cerebellum*.
 - **Respiratory Pacemaker**: Smith, J. C., et al. (1991). *Pre-Bötzinger complex: A brainstem region that may generate respiratory rhythm*.
 - **Basal Ganglia Action Selection**: Mink, J. W. (1996); Frank, M. J. (2004). *Cognitive reinforcement learning in parkinsonism*.
+
+---
+
+## Citation
+
+If you use BIB 2 or the Organismic Artificial Intelligence architecture in your research, software, or publications, please cite it as:
+
+### BibTeX
+```bibtex
+@article{uniki2026bib2,
+  title={Organismic Artificial Intelligence: Continuous Biological Computation, Homeostatic Drive, and Real-Time Plasticity in Silicon},
+  author={UnikAI Lab},
+  journal={Open Research Specification & Empirical Benchmark},
+  year={2026},
+  url={https://github.com/tgakathunderr/BIB-2}
+}
+```
+
+### APA
+> UnikAI Lab. (2026). *Organismic Artificial Intelligence: Continuous Biological Computation, Homeostatic Drive, and Real-Time Plasticity in Silicon* (Version 2.0.0). GitHub. https://github.com/tgakathunderr/BIB-2
 
 ---
 
