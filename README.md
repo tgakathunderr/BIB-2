@@ -1,5 +1,8 @@
 # BIB 2: Organismic Artificial Intelligence in Silicon
 
+> **Known issues (November 2026).** An internal audit found that BIB 2's cortical weights were fixed random matrices with no learning rule, and that the Pong results reported below came from a small perceptron outside the brain that was given the ball-to-paddle distance. Treat those results as withdrawn. The next generation, BIB-3, was rebuilt from that audit; see [unikai.in/research](https://www.unikai.in/research).
+
+
 [![Python 3.14+](https://img.shields.io/badge/python-3.14+-blue.svg)](https://www.python.org/)
 [![NumPy 2.5+](https://img.shields.io/badge/numpy-2.5+-013243.svg)](https://numpy.org/)
 [![Tests Passing](https://img.shields.io/badge/tests-60%2F60%20passed-brightgreen.svg)]()
